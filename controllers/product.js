@@ -1,14 +1,17 @@
 const Product = require("../modules/product");
-const Cookie = require("../Cookie");
+const Cookie = require("../DataSave");
 const nameRegex = /^[A-Za-z ]+$/;
 const GetAll = async (req, res, next) => {
    try {
-      let check = await Cookie.checkCookie(req);
-      if (!check) {
+      if (!(await Cookie.checkCookie(req))) {
          return res.redirect("/");
       }
       let products = await Product.find({}).lean();
-      res.render("product", { products, isProductSelected: true });
+      res.render("product", {
+         products,
+         isProductSelected: true,
+         checkPermission: Cookie.CheckIdAdmin(),
+      });
    } catch (error) {
       console.log(error);
       return res.json({ massage: "GetAll product thất bại" });

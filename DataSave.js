@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = "helloworld";
 const COOKIE_NAME = "Token_402_1";
 const User = require("./modules/user");
+let role = "";
 const checkCookie = async (req) => {
    let check = true;
    try {
@@ -18,7 +19,8 @@ const checkCookie = async (req) => {
 };
 
 const CleanCookie = (res) => {
-   res.cleanCookie(COOKIE_NAME);
+   ResetRole();
+   res.clearCookie(COOKIE_NAME);
 };
 
 const SetCookie = (res, id) => {
@@ -26,10 +28,24 @@ const SetCookie = (res, id) => {
    res.cookie(COOKIE_NAME, token, { maxAge: 900000, httpOnly: true });
 };
 
+const SetRole = (newRole) => {
+   role = newRole;
+};
+
+const CheckIdAdmin = () => {
+   let check = false;
+   if (role == "admin") check = true;
+   return check;
+};
+
+const ResetRole = () => {
+   role = "user";
+};
+
 module.exports = {
-   JWT_SECRET,
    checkCookie,
-   COOKIE_NAME,
    CleanCookie,
    SetCookie,
+   SetRole,
+   CheckIdAdmin,
 };

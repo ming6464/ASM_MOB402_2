@@ -1,14 +1,20 @@
 const User = require("../modules/user");
-const Cookie = require("../Cookie");
+const Cookie = require("../DataSave");
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const nameRegex = /^[A-Za-z ]+$/;
 const GetAll = async (req, res, next) => {
    try {
+      if (!Cookie.CheckIdAdmin()) return res.send("Not Permission");
       if (!(await Cookie.checkCookie(req))) {
          return res.redirect("/");
       }
-      let users = await User.find({}).lean();
-      res.render("user", { users, isProductSelected: false });
+      let list = await User.find({}).lean();
+      let users = list.filter((x) => x.role != "admin");
+      res.render("user", {
+         users,
+         isProductSelected: true,
+         checkPermission: true,
+      });
    } catch (error) {
       res.redirect("/");
    }
@@ -67,6 +73,7 @@ const SignIn = async (req, res, next) => {
          password: password,
       }).lean();
       await Cookie.SetCookie(res, findUser._id);
+      await Cookie.SetRole(findUser.role);
       return res.redirect("/product");
    } catch (error) {
       return res.redirect(`/`);

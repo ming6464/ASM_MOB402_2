@@ -1,12 +1,13 @@
 <div class="container-fluid">
-    {{>header}}
+    {{>header checkPermission=checkPermission}}
     <div class="container pt-3">
         <div class="row">
-            {{>tableProduct}}
+            {{> tableProduct checkPermission=checkPermission}}
         </div>
     </div>
     <a href="/product/create" class="btn btn-success position-fixed"
-        style="bottom: 10px; right: 10px; border-radius: 25px; padding: 10px 20px 10px 20px">
+        style="bottom: 10px; right: 10px; border-radius: 25px; padding: 10px 20px 10px 20px" {{#unless checkPermission}}
+        hidden {{/unless}}>
         <i class="bi bi-file-earmark-plus-fill"></i> New
     </a>
 </div>

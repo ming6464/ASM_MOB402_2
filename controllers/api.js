@@ -1,4 +1,4 @@
-const Cookie = require("../Cookie");
+const Cookie = require("../DataSave");
 
 const signInObj = {
    title1: "Sign In",
@@ -18,9 +18,11 @@ const signUpObj = {
 };
 
 const signin = (req, res, next) => {
+   Cookie.CleanCookie(res);
    res.render("signIn", signInObj);
 };
 const signup = (req, res, next) => {
+   Cookie.CleanCookie(res);
    res.render("signUp", signUpObj);
 };
 
