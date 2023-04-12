@@ -1,6 +1,6 @@
 const User = require("../modules/user");
 const Cookie = require("../Cookie");
-const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const nameRegex = /^[A-Za-z ]+$/;
 const GetAll = async (req, res, next) => {
    try {
@@ -23,10 +23,13 @@ const Create = async (req, res, next) => {
       }
       const { name, email, password } = req.body;
       const file = req.file;
-      if (!file) {
-         throw new Error("Please upload a file");
-      }
-
+      if (!file) throw new Error("lỗi file trống");
+      if (
+         !nameRegex.test(name) ||
+         !emailRegex.test(email) ||
+         password.length == 0
+      )
+         throw new Error("lỗi");
       let originName = file.path.split("\\");
       let image = "";
       for (let i = 1; i < originName.length; i++) {
@@ -44,8 +47,9 @@ const Create = async (req, res, next) => {
       return res.redirect("/user");
    } catch (error) {
       if (!check) {
-         res.redirect("/");
-      } else res.redirect("/user/create");
+         return res.redirect("/");
+      }
+      return res.redirect("/user/create");
    }
 };
 
@@ -56,6 +60,8 @@ const ShowCreate = (req, res, next) => {
 const SignIn = async (req, res, next) => {
    const { email, password } = req.body;
    try {
+      if (!emailRegex.test(email) || password.length == 0)
+         throw new Error("lỗi");
       let findUser = await User.findOne({
          email: email,
          password: password,
@@ -69,6 +75,15 @@ const SignIn = async (req, res, next) => {
 const SignUp = async (req, res, next) => {
    try {
       const { name, email, password, password1 } = req.body;
+      if (
+         !nameRegex.test(name) ||
+         !emailRegex.test(email) ||
+         password.length == 0 ||
+         password1.length == 0
+      )
+         throw new Error("không đúng định dạng");
+      else if (password != password1)
+         throw new Error("Mật khẩu không giống nhau");
       const file = req.file;
       if (!file) throw new Error("Hãy nhâp file");
       let originName = file.path.split("\\");
@@ -87,17 +102,30 @@ const SignUp = async (req, res, next) => {
       });
       await newUser.save();
    } catch (error) {
+      console.log(error);
       return res.redirect("/signup");
    }
    return res.redirect("/");
 };
 const Update = async (req, res, next) => {
+   const id = req.params.id;
    try {
       if (!(await Cookie.checkCookie(req))) {
          return res.redirect("/");
       }
-      const id = req.params.id;
       const { name, email, password } = req.body;
+      if (
+         !nameRegex.test(name) ||
+         !emailRegex.test(email) ||
+         password.length == 0
+      )
+         throw new Error("Lỗi định dạng");
+      if (
+         !nameRegex.test(name) ||
+         !emailRegex.test(email) ||
+         password.length == 0
+      )
+         throw new Error("lỗi");
       const file = req.file;
       let checkImage = true;
       if (!file) {
@@ -122,7 +150,7 @@ const Update = async (req, res, next) => {
       await User.updateOne({ _id: id }, updateUser);
       return res.redirect("/user");
    } catch (error) {
-      return res.redirect("/user/update");
+      return res.redirect(`/user/update/${id}`);
    }
 };
 

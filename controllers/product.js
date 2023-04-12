@@ -1,5 +1,6 @@
 const Product = require("../modules/product");
 const Cookie = require("../Cookie");
+const nameRegex = /^[A-Za-z ]+$/;
 const GetAll = async (req, res, next) => {
    try {
       let check = await Cookie.checkCookie(req);
@@ -9,6 +10,7 @@ const GetAll = async (req, res, next) => {
       let products = await Product.find({}).lean();
       res.render("product", { products, isProductSelected: true });
    } catch (error) {
+      console.log(error);
       return res.json({ massage: "GetAll product thất bại" });
    }
 };
@@ -21,10 +23,9 @@ const Create = async (req, res, next) => {
    try {
       const { name, price, amount, color, category } = req.body;
       const file = req.file;
-      if (!file) {
-         res.redirect("/product/update");
-      }
-
+      if (!file) throw new Error("Lỗi file trống !");
+      if (!nameRegex.test(name) || !nameRegex.test(category))
+         throw new Error("name và category không đúng định dạng");
       let originName = file.path.split("\\");
       let image = "";
       for (let i = 1; i < originName.length; i++) {
@@ -44,7 +45,10 @@ const Create = async (req, res, next) => {
          category: category,
       });
       await newProduct.save();
-   } catch (error) {}
+   } catch (error) {
+      console.log(error);
+      return res.redirect("/product/create");
+   }
    res.redirect("/product");
 };
 
@@ -57,15 +61,18 @@ const ShowUpdate = async (req, res, next) => {
       productUpdate.isUpdate = true;
       res.render("actionProduct", productUpdate);
    } catch (error) {
+      console.log(error);
       return res.redirect("/product");
    }
 };
 
 const Update = async (req, res, next) => {
+   const id = req.params.id;
    try {
-      const id = req.params.id;
       if (id.length == 0) return res.redirect("/");
       const { name, price, amount, color, category } = req.body;
+      if (!nameRegex.test(name) || !nameRegex.test(category))
+         throw new Error("Lỗi name và category không đúng định dạng");
       const file = req.file;
       let checkImage = true;
       if (!file) {
@@ -96,7 +103,8 @@ const Update = async (req, res, next) => {
       await Product.updateOne({ _id: id }, updateProduct);
       res.redirect("/product");
    } catch (error) {
-      res.redirect("/product/update");
+      console.log(error);
+      return res.redirect(`/product/update/${id}`);
    }
 };
 
@@ -108,8 +116,10 @@ const Delete = async (req, res, next) => {
          return res.redirect("/");
       }
       await Product.deleteOne({ _id: id });
-   } catch (error) {}
-   res.redirect("/product");
+   } catch (error) {
+      console.log(error);
+   }
+   return res.redirect("/product");
 };
 
 module.exports = { Create, Update, Delete, GetAll, ShowCreate, ShowUpdate };
