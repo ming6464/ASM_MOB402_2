@@ -1,0 +1,29 @@
+{{#each products}}
+<div class="col-lg-4 col-md-12 mb-4" style="height: 60%;">
+    <div class="card card1">
+        <div class="card-body">
+            <h5 class="card-title">{{name}}</h5>
+            <br>
+            <div style="width: 100%;height: 55%;">
+                <img src="{{image}}" style="height: 100%;width: auto; max-width: 100%;" alt="">
+            </div>
+
+            <br><br>
+            <span class="h2">${{price}}</span>
+            <br><br>
+            <ul>
+                <li>Amount1: {{amount}}</li>
+                <li>Color : {{color}}</li>
+                <li>Category: {{category}}</li>
+            </ul>
+            <div class="d-grid my-3">
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <a href="/product/update/{{this._id}}" class="btn btn-outline-dark btn-block">update</a>
+                    <button class="btn btn-outline-dark btn-block"
+                        onclick="handleActionDelete('/product/delete/{{this._id}}')">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}

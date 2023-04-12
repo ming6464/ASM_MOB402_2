@@ -1,0 +1,40 @@
+<div class="container-fluid m-4 mt-3">
+    <a href="/user" class="btn btn-outline-secondary mb-2" style="border-radius: 15px 7px 7px 15px;"><i
+            class="bi bi-backspace-fill"></i> Back</a>
+    <div class="row justify-content-center m-1 mt-3">
+        <div class="p-5">
+            <form {{#if isUpdate}}action="/user/update/{{_id}}" {{else}}action="/user/create" {{/if}}
+                class="form-floating" method="post" enctype="multipart/form-data">
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Full name</strong></label>
+                    <input type="text" class="form-control" {{#if isUpdate}} value="{{name}}" {{/if}} name="name"
+                        aria-describedby="emailHelp" placeholder="Name" />
+                </div>
+
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>email</strong></label>
+                    <input type="text" class="form-control" {{#if isUpdate}} value="{{email}}" {{/if}} name="email"
+                        aria-describedby="emailHelp" placeholder="Email" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="exampleInputPassword1" class="form-label"><strong>Password</strong></label>
+                    <input type="text" name="password" class="form-control" id="exampleInputPassword1" {{#if isUpdate}}
+                        value="{{password}}" {{/if}} />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Image</strong></label>
+                    <input type="file" class="form-control" accept="image/*" name="image" aria-describedby="emailHelp"
+                        placeholder="Image" />
+                </div>
+
+                <button type="submit" class="btn btn-outline-success">{{#if
+                    isUpdate}}<i class="bi bi-save-fill"></i> Save{{else}}<i class="bi bi-file-earmark-plus-fill"></i>
+                    Create{{/if}}</button>
+            </form>
+        </div>
+    </div>
+</div>

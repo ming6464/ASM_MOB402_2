@@ -1,0 +1,51 @@
+<div class="container-fluid m-4 mt-3">
+    <a href="/product" class="btn btn-outline-secondary mb-2" style="border-radius: 15px 7px 7px 15px;"><i
+            class="bi bi-backspace-fill"></i> Back</a>
+    <div class="row justify-content-center m-1 mt-3">
+        <div>
+            <form {{#if isUpdate}}action="/product/update/{{_id}}" {{else}}action="/product/create" {{/if}}
+                class="form-floating" method="post" enctype="multipart/form-data">
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Name</strong></label>
+                    <input type="text" class="form-control" {{#if isUpdate}} value="{{name}}" {{/if}} name="name"
+                        aria-describedby="emailHelp" placeholder="Name" />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Price</strong></label>
+                    <input type="number" min="0" {{#if isUpdate}} value="{{price}}" {{/if}} class="form-control"
+                        name="price" aria-describedby="emailHelp" placeholder="Price" />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Amount</strong></label>
+                    <input type="number" min="0" class="form-control" {{#if isUpdate}} value="{{amount}}" {{/if}}
+                        name="amount" aria-describedby="emailHelp" placeholder="Amount" />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Image</strong></label>
+                    <input type="file" class="form-control" accept="image/*" value="public\\{{image}}" name="image"
+                        aria-describedby="emailHelp" placeholder="Image" />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Color</strong></label>
+                    <input type="color" class="form-control" {{#if isUpdate}} value="{{color}}" {{/if}} name="color"
+                        aria-describedby="emailHelp" placeholder="Color" />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Category</strong></label>
+                    <input type="text" class="form-control" name="category" aria-describedby="emailHelp" {{#if
+                        isUpdate}} value="{{category}}" {{/if}} placeholder="Category" />
+                </div>
+
+                <button type="submit" class="btn btn-outline-success">{{#if
+                    isUpdate}}<i class="bi bi-save-fill"></i> Save{{else}}<i class="bi bi-file-earmark-plus-fill"></i>
+                    Create{{/if}}</button>
+            </form>
+        </div>
+    </div>
+</div>

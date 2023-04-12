@@ -1,0 +1,51 @@
+<div class="container-fluid" style="padding: 7em 0;">
+    <div class="row justify-content-center">
+        <div class="col-11 col-md-6 col-lg-4 p-5 shadow-lg p-5 rounded
+            bg-success-subtle">
+            <h2 class="text-center fw-bolder">{{title1}}</h2>
+            <form action="{{action1}}" class="form-floating" method="post" {{#if isSignUp}}
+                enctype="multipart/form-data" {{/if}}>
+                {{#if isSignUp}}
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Full name</strong></label>
+                    <input type="text" class="form-control bg-secondary-subtle" name="name" aria-describedby="emailHelp"
+                        placeholder="Full name" />
+                </div>
+                {{/if}}
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Email address</strong></label>
+                    <input type="email" class="form-control bg-secondary-subtle" name="email"
+                        aria-describedby="emailHelp" placeholder="Enter email" />
+                </div>
+                <div class="form-group mb-4">
+                    <label for="exampleInputPassword1"><strong>Password</strong></label>
+                    <input type="password" class="form-control bg-secondary-subtle" name="password"
+                        placeholder="Password" />
+                </div>
+
+                {{#if isSignUp}}
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputPassword1"><strong>Password</strong></label>
+                    <input type="password" class="form-control bg-secondary-subtle" name="password1"
+                        placeholder="Password" />
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="exampleInputEmail1"><strong>Image</strong></label>
+                    <input type="file" class="form-control" accept="image/*" name="image" aria-describedby="emailHelp"
+                        placeholder="Image" />
+                </div>
+                {{/if}}
+                <button type="submit" class="btn btn-primary">Sign up</button>
+            </form>
+            <p>
+            <form action="{{action2}}" method="get">
+                <span class="mt-2">{{massage}}</span>
+                <button class="fw-semibold mt-2 text-primary-emphasis rounded
+                  bg-success-subtle" style="border: 0px; padding: 0px;">{{title2}}</button>
+            </form>
+            </p>
+        </div>
+    </div>
+</div>
